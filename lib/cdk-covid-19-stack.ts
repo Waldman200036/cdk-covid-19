@@ -15,9 +15,29 @@ export class CdkCovid19Stack extends cdk.Stack {
       code: lambda.Code.fromAsset('lambda'), // code loaded from "lambda" directory
       handler: 'hello.handler', // file is hello
     });
+
+    const bye = new lambda.Function(this, 'byeHandler', {
+      runtime: lambda.Runtime.NODEJS_10_X, // execution environment
+      code: lambda.Code.fromAsset('lambda'), // code loaded from "lambda" directory
+      handler: 'bye.handler', // file is hello
+    });
+
+    const app = new lambda.Function(this, 'appHandler', {
+      runtime: lambda.Runtime.NODEJS_10_X, // execution environment
+      code: lambda.Code.fromAsset('lambda'), // code loaded from "lambda" directory
+      handler: 'test/app.handler', // file is app
+    });
     // defines an API Gateway REST API resource backed by our "hello" function.
     new apigw.LambdaRestApi(this, 'Endpoint', {
       handler: hello,
-    })
+    });
+
+    new apigw.LambdaRestApi(this, 'Endpoint2', {
+      handler: bye,
+    });
+
+    new apigw.LambdaRestApi(this, 'apppoint', {
+      handler: app,
+    });
   }
 }
